@@ -1,15 +1,15 @@
 # Node.jsダウンロード用ビルドステージ
-FROM ruby:2.6.6 AS nodejs
+FROM ruby:2.7.8 AS nodejs
 
 WORKDIR /tmp
 
 # Node.jsのダウンロード
-RUN curl -LO https://nodejs.org/dist/v12.14.1/node-v12.14.1-linux-x64.tar.xz
-RUN tar xvf node-v12.14.1-linux-x64.tar.xz
-RUN mv node-v12.14.1-linux-x64 node
+RUN curl -LO https://nodejs.org/dist/v18.17.1/node-v18.17.1-linux-x64.tar.xz
+RUN tar xvf node-v18.17.1-linux-x64.tar.xz
+RUN mv node-v18.17.1-linux-x64 node
 
 # Railsプロジェクトインストール
-FROM ruby:2.6.6
+FROM ruby:2.7.8
 
 # nodejsをインストールしたイメージからnode.jsをコピーする
 COPY --from=nodejs /tmp/node /opt/node
@@ -25,7 +25,7 @@ RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 ENV PATH /home/rails/.yarn/bin:/home/rails/.config/yarn/global/node_modules/.bin:$PATH
 
 # ruby-2.7.0でnewした場合を考慮
-RUN gem install bundler
+RUN gem install bundler -v 2.4.22
 
 WORKDIR /app
 
