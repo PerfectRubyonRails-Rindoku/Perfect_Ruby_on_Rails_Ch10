@@ -29,18 +29,23 @@ RUN gem install bundler -v 2.4.22
 
 WORKDIR /app
 
-# Dockerのビルドステップキャッシュを利用するため
-# 先にGemfileを転送し、bundle installする
-COPY --chown=rails Gemfile Gemfile.lock package.json yarn.lock /app/
-
-RUN bundle install
-RUN yarn install
-
-COPY --chown=rails . /app
-
-RUN bin/rails assets:precompile
-
-VOLUME /app/public
+RUN bundle config set path vendor/bundle
 
 #実行時にコマンド指定が無い場合に実行されるコマンド
-CMD ["bin/rails", "s", "-b", "0.0.0.0"]
+CMD ["bash"]
+
+# # Dockerのビルドステップキャッシュを利用するため
+# # 先にGemfileを転送し、bundle installする
+# COPY --chown=rails Gemfile Gemfile.lock package.json yarn.lock /app/
+
+# RUN bundle install
+# RUN yarn install
+
+# COPY --chown=rails . /app
+
+# RUN bin/rails assets:precompile
+
+# VOLUME /app/public
+
+# #実行時にコマンド指定が無い場合に実行されるコマンド
+# CMD ["bin/rails", "s", "-b", "0.0.0.0"]
